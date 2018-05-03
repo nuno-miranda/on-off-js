@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="inputs.js"></script>
+        <link rel="stylesheet" href="css/input.css">
+        <script>
+            $(document).ready(function () {
+
+
+                $("#button4").Switch({
+                    layout: {
+                        width: "1.9em", borderRadius: "0.1em", padding: "0.1em", height: "0.8em", handler: {height: "0.8em", width: "0.8em", borderRadius: "0.15em", backgroundColor: "rgba(255,255,255,0.85)"}, on: {color: "black"}, off: {color: "gray"}
+                    }, setValue: 'off'
+                }).on("toggle", function (x, on) {
+                    if (on)
+                        $(".button").Switch("setValue", "on");
+                    else
+                        $(".button").Switch("setValue", "off");
+                });
+
+                $(".button").Switch("setValue", "off");
+
+                $(".button2").Switch(
+                        {
+                            layout: {
+                                width: "1.9em", borderRadius: "0.2em", height: "0.8em", handler: {height: "0.8em", width: "0.8em", borderRadius: "0.15em"}, on: {color: "#9F9"}, off: {color: "#F55"}
+                            }, setValue: 'on'
+                        }
+                ).on("toggle", function (x, on) {
+                    if (on) {
+                        $("#doing").text(" ON !!! " + Date.now()).css({backgroundColor: "#5F5"});
+                    } else {
+                        $("#doing").text(" OFF !!! " + Date.now()).css({backgroundColor: "#F55"});
+                    }
+                });
+
+                $("#button2").Switch(
+                        {
+                            layout: {
+                                width: "1.9em", height: "0.3em", handler: {height: "0.3em", width: "0.3em"}, on: {color: "#9F9"}, off: {color: "#333"}
+                            }, setValue: 'on'
+                        })
+                        .on("toggle", function (a, b) {
+                            if (b)
+                                $("#doing").text("Single element Switch button turned ON!!");
+                            else
+                                $("#doing").text("Single Switch button turned OFF!!");
+                        });
+
+                $("#button3").FunctionSlider().on("pullRight", function (a, b) {
+                    $("#doing2").text(" RIGHT !!! " + Date.now()).css({backgroundColor: "#5F5"});
+                    $("#buttonChangedBySlider").Switch("setValue", "on");
+                }).on("pullLeft", function (a, b) {
+                    $("#doing2").text(" LEFT !!! " + Date.now()).css({backgroundColor: "#F55"});
+                    $("#buttonChangedBySlider").Switch("setValue", "off");
+                });
+
+
+
+
+                //            setInterval(function () {
+                //                $(".button2").trigger("tap");
+                //            }, 2000);
+
+            });
+
+
+        </script>
+        <style>
+            body{
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Chrome/Safari/Opera */
+                -khtml-user-select: none; /* Konqueror */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently*/
+            }
+        </style>
+    </head>
+    <body style=" font-size: 50px;">
+        <div>
+            <h3>Switch Buttons</h3>
+            <div id='button4'  style='display: inline-block;'></div>
+
+            <div class='button' style='display: inline-block;'></div>
+            <div class='button' style='display: inline-block;'></div>
+            <div class='button' style='display: inline-block;'></div>
+            <div class='button' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div class='button2' style='display: inline-block;'></div>
+            <div id='button2'  style='display: inline-block;'></div>
+
+            <h6 id="doing"></h6>
+
+            <div>
+                <span style="font-size: 50px;">Function Slider</span>
+
+                <div id='button3' class='functionButton' style='display: inline-block;' ></div>
+                <div id="buttonChangedBySlider" style='display: inline-block;'></div>
+                <div>
+                    <span style="font-size: 20px;" id="doing2"></span>
+                </div>
+            </div>
+
+    </body>
+</html>
