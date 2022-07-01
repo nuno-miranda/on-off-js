@@ -1,15 +1,14 @@
-
-(function ($) {
+(function($) {
 
     /**
      *	 Class switchControls
      *	 properties - Object of switch settings and options merged
      */
 
-    var switchControl = function (DOMElement, properties)
-    {
+    var switchControl = function(DOMElement, properties) {
         // Constructor method
-        this.createSwitchControl = function () {
+        // just a festuretest
+        this.createSwitchControl = function() {
             this.properties = properties;
             this.DOMElement = DOMElement;
             $(this.DOMElement).data("initialPosXMouse", 0);
@@ -18,46 +17,46 @@
             self = this;
 
             $(this.DOMElement).addClass('buttonSwitch')
-                    .css({
-                        height: properties.layout.height,
-                        width: properties.layout.width,
-                        padding: properties.layout.padding,
-                        borderRadius: properties.layout.borderRadius
-                    })
-                    .append('<div style="background-color: ' + properties.layout.handler.backgroundColor + ';'
-                            + ' border-radius: ' + properties.layout.handler.borderRadius + ';'
-                            + ' height: ' + properties.layout.handler.height + ';'
-                            + ' width: ' + properties.layout.handler.width + ';'
-                            + '"></div>')
-                    .data("distance", 0)
-                    .data("pressing", "0")
-                    .each(function () {
-                        if ($(this.DOMElement).data("on") === "1")
-                            self.setOn($(this.DOMElement));
-                        else
-                            self.setOff($(this.DOMElement));
-                    });
+                .css({
+                    height: properties.layout.height,
+                    width: properties.layout.width,
+                    padding: properties.layout.padding,
+                    borderRadius: properties.layout.borderRadius
+                })
+                .append('<div style="background-color: ' + properties.layout.handler.backgroundColor + ';' +
+                    ' border-radius: ' + properties.layout.handler.borderRadius + ';' +
+                    ' height: ' + properties.layout.handler.height + ';' +
+                    ' width: ' + properties.layout.handler.width + ';' +
+                    '"></div>')
+                .data("distance", 0)
+                .data("pressing", "0")
+                .each(function() {
+                    if ($(this.DOMElement).data("on") === "1")
+                        self.setOn($(this.DOMElement));
+                    else
+                        self.setOff($(this.DOMElement));
+                });
         };
 
         //// Public methods
         /**
          * Set data attribute value
          */
-        this.setData = function (key, value) {
+        this.setData = function(key, value) {
             $(this.DOMElement).data(key, value);
         };
 
         /**
          * Get data attribute value
          */
-        this.getData = function (key) {
+        this.getData = function(key) {
             return $(this.DOMElement).data(key);
         };
 
         /**
          *	Turn off events
          */
-        this.eventOff = function (element, eventsString) {
+        this.eventOff = function(element, eventsString) {
             $(element).off(eventsString);
         };
 
@@ -65,7 +64,7 @@
          *	Change object CSS
          *	If argument applyTo are passed then apply css to the switch button handler
          */
-        this.setCSS = function (element, objCSS, applyTo) {
+        this.setCSS = function(element, objCSS, applyTo) {
             if (typeof applyTo === 'undefined')
                 $(element).css(objCSS);
             else if (typeof applyTo !== 'undefined' && applyTo === 'HANDLER')
@@ -77,14 +76,14 @@
         /**
          * Set the button status to "ON"
          */
-        this.setOn = function (element, options) {
+        this.setOn = function(element, options) {
             var children = $(element).children()[0];
             $(children).addClass("transition");
             var posX = ($(element).width() - $(children).width());
             $(children).css("transform", "translateX(" + posX + "px)");
             $(element).data("current-posx", posX);
             $(element).data("pressing", "0");
-            $(element).css({backgroundColor: $(element).data("on-color")});
+            $(element).css({ backgroundColor: $(element).data("on-color") });
             if ($(element).data("on") === "0") {
                 $(element).trigger("toggle", true);
             }
@@ -94,12 +93,12 @@
         /**
          * Set the button status to "OFF"
          */
-        this.setOff = function (element, options) {
+        this.setOff = function(element, options) {
             var children = $(element).children()[0];
             $(children).addClass("transition");
             $(children).css("transform", "translateX(" + 0 + "px)");
             $(element).data("current-posx", 0);
-            $(element).css({backgroundColor: $(element).data("off-color")});
+            $(element).css({ backgroundColor: $(element).data("off-color") });
             $(element).data("pressing", "0");
             if ($(element).data("on") === "1") {
                 $(element).trigger("toggle", false);
@@ -109,9 +108,9 @@
         };
 
         this.listEvents = {
-            mousedown: function (elem) {
+            mousedown: function(elem) {
 
-                $(elem).on("mousedown touchstart", function (e) {
+                $(elem).on("mousedown touchstart", function(e) {
                     //$(this).data("pressing", "1");
                     $(this).data("pressing", "1");
                     //$(this).data("distance", 0);;
@@ -120,7 +119,7 @@
                     $(children).removeClass("transition");
                     //to prevent moving outside switch circle
                     if (e.target === children)
-                        //self.canMove = true;
+                    //self.canMove = true;
                         $(this).data("canMove", true);
                     else
                         $(this).data("canMove", false);
@@ -136,14 +135,14 @@
                     $(this).data("distance", 0);
                 });
             },
-            mousemove: function (elem) {
-                $(elem).on("mousemove touchmove", function (e) {
+            mousemove: function(elem) {
+                $(elem).on("mousemove touchmove", function(e) {
                     var dist = $(this).data("distance");
                     dist++;
                     $(this).data("distance", dist);
                     //$(this).data("distance", distance);
 
-                    var initialPosXTransform = $(this).data("initial-posx");//$(this).data("initial-posx");
+                    var initialPosXTransform = $(this).data("initial-posx"); //$(this).data("initial-posx");
                     var relativePosX = ((e.clientX || e.originalEvent.touches[0].pageX) - $(this).data("initialPosXMouse") + initialPosXTransform);
                     var children = $(this).children()[0];
                     if ($(this).data("pressing") === "1" && $(this).data("canMove")) {
@@ -161,8 +160,8 @@
                     }
                 });
             },
-            mouseup: function (elem) {
-                $(elem).on("mouseup touchend ", function (e) {
+            mouseup: function(elem) {
+                $(elem).on("mouseup touchend ", function(e) {
                     var totalSize = $(this).width();
                     var distance = $(this).data("distance");
 
@@ -185,8 +184,8 @@
 
                 });
             },
-            mouseleave: function (elem) {
-                $(elem).on("mouseleave", function (e) {
+            mouseleave: function(elem) {
+                $(elem).on("mouseleave", function(e) {
                     var currentPosX = $(this).data("current-posx");
                     if ($(this).data("pressing") === "1") {
                         if (currentPosX > $(this).width() / 2) {
@@ -198,8 +197,8 @@
                     $(this).data("pressing", "0");
                 });
             },
-            tap: function (elem) {
-                $(elem).on("tap", function (e) {
+            tap: function(elem) {
+                $(elem).on("tap", function(e) {
                     if ($(this).data("on") === "0") {
                         self.setOn($(this));
                     } else {
@@ -211,7 +210,7 @@
 
     }; // end of class
 
-    $.fn.Switch = function (options, value) {
+    $.fn.Switch = function(options, value) {
 
         //default options.
         var settings = {
@@ -248,8 +247,7 @@
             $(objSwitch.DOMElement).data("off-color", settings.layout.off.color);
             this.data('objSwitch', objSwitch);
         } // Object is already created we need to get it from data attribute
-        else
-        {
+        else {
             settings = $.extend(true, {}, settings, options);
             objSwitch = this.data('objSwitch');
         }
@@ -263,18 +261,18 @@
 
         if (value === "disabled") {
             objSwitch.eventOff(objSwitch.DOMElement, "touchstart mousedown touchmove mousemove mouseup touchend tap mouseleave");
-            objSwitch.setCSS(objSwitch.DOMElement, {backgroundColor: "gray"});
-            objSwitch.setCSS(objSwitch.DOMElement, {backgroundColor: "gainsboro"}, 'HANDLER');
+            objSwitch.setCSS(objSwitch.DOMElement, { backgroundColor: "gray" });
+            objSwitch.setCSS(objSwitch.DOMElement, { backgroundColor: "gainsboro" }, 'HANDLER');
 
         } else {
 
-            objSwitch.setCSS(objSwitch.DOMElement, {backgroundColor: settings.layout.handler.backgroundColor}, 'HANDLER');
+            objSwitch.setCSS(objSwitch.DOMElement, { backgroundColor: settings.layout.handler.backgroundColor }, 'HANDLER');
 
-            $(objSwitch.DOMElement).each(function (k, v) {
+            $(objSwitch.DOMElement).each(function(k, v) {
                 if ($(v).data("on") === '1')
-                    objSwitch.setCSS(v, {backgroundColor: $(v).data("on-color")});
+                    objSwitch.setCSS(v, { backgroundColor: $(v).data("on-color") });
                 else
-                    objSwitch.setCSS(v, {backgroundColor: $(v).data("off-color")});
+                    objSwitch.setCSS(v, { backgroundColor: $(v).data("off-color") });
             });
 
             objSwitch.listEvents.mousedown(objSwitch.DOMElement);
@@ -288,16 +286,16 @@
         if (options !== undefined) {
             if (options === "setValue") {
                 if (value === "on") {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         objSwitch.setOn($(this));
                     });
 
                 } else if (value === "off") {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         objSwitch.setOff($(this));
                     });
                 } else if (value === "toggle") {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         if ($(k).data("on") === "1")
                             objSwitch.setOff($(k));
                         else
@@ -306,15 +304,15 @@
                 }
             } else if (options.setValue) {
                 if (options.setValue === 'on') {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         objSwitch.setOn($(this));
                     });
                 } else if (options.setValue === 'off') {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         objSwitch.setOff($(this));
                     });
                 } else if (options.setValue === "toggle") {
-                    $(this).each(function (v, k) {
+                    $(this).each(function(v, k) {
                         if ($(k).data("on") === "1")
                             objSwitch.setOff($(k));
                         else
@@ -329,4 +327,3 @@
 
 
 }(jQuery));
-
